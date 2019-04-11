@@ -2,18 +2,18 @@ package io.vinson.server.websocket;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
- * @Description:
+ * 启动一个websocket服务器
+ *
  * @author: jiangweixin
  * @date: 2019/4/7
  */
 public class WebSocketServer {
 
-    public static final int PORT = 8081;
+    public static final int PORT = 8082;
 
     public static void start() {
         Server server = new Server();
