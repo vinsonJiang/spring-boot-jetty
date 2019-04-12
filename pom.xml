@@ -81,6 +81,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration> <!--设置程序执行的主类-->
+                    <mainClass>io.vinson.server.SpringBootJettyApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
