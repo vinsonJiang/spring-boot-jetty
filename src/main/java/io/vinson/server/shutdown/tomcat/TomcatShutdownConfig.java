@@ -1,8 +1,6 @@
 package io.vinson.server.shutdown.tomcat;
 
-import io.vinson.server.shutdown.jetty.JettyGracefulShutdown;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.embedded.jetty.JettyReactiveWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatReactiveWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +19,7 @@ public class TomcatShutdownConfig {
     }
 
     @Bean
-    public WebServerFactoryCustomizer<TomcatReactiveWebServerFactory> jettyCustomizer(TomcatGracefulShutdown server) {
+    public WebServerFactoryCustomizer<TomcatReactiveWebServerFactory> tomcatCustomizer(TomcatGracefulShutdown server) {
         return factory -> factory.addConnectorCustomizers(server);
     }
 }
