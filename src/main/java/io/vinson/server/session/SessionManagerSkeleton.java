@@ -4,10 +4,13 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.util.LazyList;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +49,8 @@ public abstract class SessionManagerSkeleton<T extends SessionManagerSkeleton.Se
     @Override
     protected final void addSession(AbstractSession session) {
         if (isRunning()) {
-            @SuppressWarnings({"unchecked"}) T sessionSkeleton = (T) session;
+            @SuppressWarnings({"unchecked"}) 
+            T sessionSkeleton = (T) session;
             String clusterId = getClusterId(session);
             sessions.put(clusterId, sessionSkeleton);
             sessionSkeleton.willPassivate();
@@ -75,6 +79,10 @@ public abstract class SessionManagerSkeleton<T extends SessionManagerSkeleton.Se
                 session.willPassivate();
             }
         }
+    }
+
+    protected String getClusterId(AbstractSession session) {
+        return null;
     }
 
     @Override
@@ -181,7 +189,6 @@ public abstract class SessionManagerSkeleton<T extends SessionManagerSkeleton.Se
 
         public SessionSkeleton(HttpServletRequest request) {
             super(SessionManagerSkeleton.this, request);
-            super.setMaxInactiveInterval(SessionManagerSkeleton.this._dftMaxIdleSecs > 0 ? SessionManagerSkeleton.this._dftMaxIdleSecs : -1);
         }
 
         public SessionSkeleton(long created, long accessed, String clusterId) {
@@ -193,6 +200,8 @@ public abstract class SessionManagerSkeleton<T extends SessionManagerSkeleton.Se
             LOG.debug("Timing out session id={}", getClusterId());
             super.timeout();
         }
+
+        protected abstract long getClusterId();
 
         protected void setCookieSetTime(long time) {
             try {
